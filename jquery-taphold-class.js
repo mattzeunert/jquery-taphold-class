@@ -2,28 +2,30 @@
 // This is similar to :active in CSS but for mobile devices.
 // Depends on jQuery Mobile
 // Usage: $(element).tapholdClass("active-element-class");
-$.fn.tapholdClass = function(cls){
-    $(this).each(function(){
-        var element = $(this);
-        var delay = 140;
-        var doAddClass = false;
-        element.on("vmousedown", function(){
-            doAddClass = true;
-            setTimeout(function(){
-                if (doAddClass)
-                {
-                    element.addClass(cls);
-                }
-            }, delay);
-        });
-        element.on("vmouseup", function(){
+(function($){
+    $.fn.tapholdClass = function(cls){
+        $(this).each(function(){
+            var element = $(this);
+            var delay = 140;
+            var doAddClass = false;
+            element.on("vmousedown", function(){
+                doAddClass = true;
+                setTimeout(function(){
+                    if (doAddClass)
+                    {
+                        element.addClass(cls);
+                    }
+                }, delay);
+            });
+            element.on("vmouseup scrollstart", function(){
+                    element.removeClass(cls);
+                    doAddClass = false;
+            });
+            element.on("taphold", function(){
                 element.removeClass(cls);
                 doAddClass = false;
+            });
+            return this;
         });
-        element.on("taphold", function(){
-            element.removeClass(cls);
-            doAddClass = false;
-        });
-        return this;
-    });
-};
+    };
+})(jQuery);
